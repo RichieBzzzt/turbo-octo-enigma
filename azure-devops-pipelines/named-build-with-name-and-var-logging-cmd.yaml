@@ -15,7 +15,19 @@ variables:
   - name: version_number
     value: $(version_major).$(version_minor).$(version_revision)
 
+name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+
 steps:
+- task: PowerShell@2
+  displayName: 'Build Number Using Name Property'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "This is the variable for build number using 'name' property:"
+      Write-Host "$(Build.BuildNumber)"
+      Write-Host 'Note that '$(Rev:r)' is not included...'
+      Write-Host 'To replicate '$(Rev:r)' create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
+
 - task: PowerShell@2
   displayName: 'Logging Command'
   inputs:
@@ -31,4 +43,5 @@ steps:
     script: |
       Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
       Write-Host "$(Build.BuildNumber)"
+      Write-Host "This overwrites what is set using 'name' property in the azure devops yaml."
 
