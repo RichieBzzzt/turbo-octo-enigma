@@ -9,11 +9,22 @@ variables:
 
 name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
-steps:
-- task: PowerShell@2
-  displayName: 'Pre-defined build number.'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Host "This is the predefined variable for build number using 'name' property:"
-      Write-Host "$(Build.BuildNumber)"
+stages:
+- stage: deploy
+  jobs:
+  - deployment: VarInName
+    displayName: Var In Name
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'varinname'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Pre-defined build number.'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Write-Host "This is the predefined variable for build number using 'name' property:"
+                Write-Host "$(Build.BuildNumber)"
