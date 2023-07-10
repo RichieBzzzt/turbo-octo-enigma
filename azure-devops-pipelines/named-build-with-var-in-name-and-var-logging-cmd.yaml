@@ -25,8 +25,8 @@ steps:
     script: |
       Write-Host "This is the variable for build number using 'name' property:"
       Write-Host "$(Build.BuildNumber)"
-      Write-Host 'Note that '$(Rev:r)' is not included...'
-      Write-Host 'To replicate '$(Rev:r)' create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
+      Write-Host 'Note that Rev:r is not included...'
+      Write-Host 'To replicate Rev:r create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
 
 - task: PowerShell@2
   displayName: 'Logging Command'
