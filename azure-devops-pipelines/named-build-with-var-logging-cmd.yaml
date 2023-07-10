@@ -15,20 +15,31 @@ variables:
   - name: version_number
     value: $(version_major).$(version_minor).$(version_revision)
 
-steps:
-- task: PowerShell@2
-  displayName: 'Logging Command'
-  inputs:
-    targetType: 'inline'
-    script: |
-        $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
-        Write-Host "##vso[build.updatebuildnumber]$BuildName"
+stages:
+- stage: deploy
+  jobs:
+  - deployment: VarLoggingCmd
+    displayName: Var Logging Cmd
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'varloggingcmd'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Logging Command'
+            inputs:
+              targetType: 'inline'
+              script: |
+                  $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
+                  Write-Host "##vso[build.updatebuildnumber]$BuildName"
 
-- task: PowerShell@2
-  displayName: 'Build Number Using Logging Command'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
-      Write-Host "$(Build.BuildNumber)"
+          - task: PowerShell@2
+            displayName: 'Build Number Using Logging Command'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
+                Write-Host "$(Build.BuildNumber)"
 
