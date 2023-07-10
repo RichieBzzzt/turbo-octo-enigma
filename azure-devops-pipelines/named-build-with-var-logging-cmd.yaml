@@ -16,6 +16,17 @@ variables:
     value: $(version_major).$(version_minor).$(version_revision)
 
 stages:
+- stage: build
+  jobs:
+  - job:
+    - task: PowerShell@2
+      displayName: 'Logging Command'
+      inputs:
+        targetType: 'inline'
+        script: |
+            $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
+            Write-Host "##vso[build.updatebuildnumber]$BuildName"
+            
 - stage: deploy
   jobs:
   - deployment: VarLoggingCmd
@@ -27,14 +38,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: PowerShell@2
-            displayName: 'Logging Command'
-            inputs:
-              targetType: 'inline'
-              script: |
-                  $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
-                  Write-Host "##vso[build.updatebuildnumber]$BuildName"
-
           - task: PowerShell@2
             displayName: 'Build Number Using Logging Command'
             inputs:
