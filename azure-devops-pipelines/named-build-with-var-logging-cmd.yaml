@@ -19,6 +19,14 @@ name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
 steps:
 - task: PowerShell@2
+  displayName: 'Build Number Using Name Property'
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "This is the variable for build number using 'name' property:"
+      Write-Host "$(Build.BuildNumber)"
+
+- task: PowerShell@2
   displayName: 'Logging Command'
   inputs:
     targetType: 'inline'
@@ -26,12 +34,11 @@ steps:
         $BuildName = $env:BUILD_DEFINITIONNAME+'_'+$env:BOB +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME 
         Write-Host "##vso[build.updatebuildnumber]$BuildName"
 
-      
 - task: PowerShell@2
-  displayName: 'New Build Number.'
+  displayName: 'Build Number Using Logging Command'
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "This is the predefined variable for build number using 'name' property:"
+      Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
       Write-Host "$(Build.BuildNumber)"
 
