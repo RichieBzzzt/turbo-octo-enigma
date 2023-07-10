@@ -11,7 +11,7 @@ variables:
   - name: "version_minor"
     value: "0"
 
-name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(Rev:r)_$(BuildSourceBranchName)
+name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(Rev:r)_$(Build.SourceBranchName)
 
 stages:
 - stage: build
