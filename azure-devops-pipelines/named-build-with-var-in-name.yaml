@@ -10,10 +10,8 @@ variables:
     value: "0"
   - name: "version_minor"
     value: "0"
-  - name: "version_revision"
-    value: $[counter(variables['Version.Minor'], 0)]
 
-name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(version_revision)
+name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(Rev:r)_$(BuildSourceBranchName)
 
 stages:
 - stage: build
@@ -27,8 +25,6 @@ stages:
         script: |
           Write-Host "This is the variable for build number using 'name' property:"
           Write-Host "$(Build.BuildNumber)"
-          Write-Host 'Note that Rev:r is not included...'
-          Write-Host 'To replicate Rev:r create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
 
 - stage: deploy
   jobs:
