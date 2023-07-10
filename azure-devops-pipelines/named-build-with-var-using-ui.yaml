@@ -3,7 +3,7 @@ trigger: none
 pool:
   vmImage: ubuntu-latest
 
-name: $(TeamProject)_cephalopod_$(Build.SourceBranchName)_$(ui.semver).$(Rev:r)
+name: $(TeamProject)_cephalopod_$(ui.semver).$(Rev:r)_$(Build.SourceBranchName)
 
 stages:
 - stage: deploy
