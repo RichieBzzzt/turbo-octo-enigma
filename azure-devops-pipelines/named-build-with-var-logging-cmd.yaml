@@ -18,7 +18,8 @@ variables:
 stages:
 - stage: build
   jobs:
-  - job:
+  - job: Build
+    steps:
     - task: PowerShell@2
       displayName: 'Logging Command'
       inputs:
@@ -26,7 +27,7 @@ stages:
         script: |
             $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
             Write-Host "##vso[build.updatebuildnumber]$BuildName"
-            
+
 - stage: deploy
   jobs:
   - deployment: VarLoggingCmd
