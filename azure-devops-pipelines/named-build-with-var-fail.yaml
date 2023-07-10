@@ -7,7 +7,7 @@ variables:
   - name: toe
     value: "turbo_octo_enigma"
 
-name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
 steps:
 - task: PowerShell@2
