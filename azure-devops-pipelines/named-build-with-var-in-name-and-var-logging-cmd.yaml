@@ -12,10 +12,8 @@ variables:
     value: "0"
   - name: "version_revision"
     value: $[counter(variables['Version.Minor'], 0)]
-  - name: version_number
-    value: $(version_major).$(version_minor).$(version_revision)
 
-name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(version_revision)
 
 stages:
 - stage: build
@@ -36,7 +34,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-            $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
+            $version_number = $env:VERSION_MAJOR+'.'+$env:VERSION_MINOR+'.'+$env:VERSION_REVISION
+            $BuildName = $env:TOE +'_'+$version_number +'_'+ $env:BUILD_SOURCEBRANCHNAME
             Write-Host "##vso[build.updatebuildnumber]$BuildName"
 
 - stage: deploy
