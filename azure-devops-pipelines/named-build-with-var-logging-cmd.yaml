@@ -7,14 +7,16 @@ variables:
   name: bob
   value: "toe"
 
+name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+
 steps:
 - task: PowerShell@2
   displayName: 'Logging Command'
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host ##vso[build.updatebuildnumber]$(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
-
+        Write-Host "##vso[build.updatebuildnumber]$(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)"
+      
 - task: PowerShell@2
   displayName: 'Pre-defined build number.'
   inputs:
