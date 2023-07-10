@@ -5,7 +5,7 @@ pool:
 
 variables:
   - name: toe
-    value: "turbo_octo_enigma"
+    value: "cephalopod"
   - name: "version_major"
     value: "0"
   - name: "version_minor"
@@ -15,7 +15,7 @@ variables:
   - name: version_number
     value: $(version_major).$(version_minor).$(version_revision)
 
-name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
 steps:
 - task: PowerShell@2
