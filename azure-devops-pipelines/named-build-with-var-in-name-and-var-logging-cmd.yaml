@@ -36,11 +36,11 @@ stages:
 
 - stage: deploy
   jobs:
-  - deployment: VarLoggingCmd
-    displayName: Var Logging Cmd
+  - deployment: VarNameLogging
+    displayName: Var Name & Logging Cmd
     pool:
       vmImage: 'ubuntu-latest'
-    environment: 'varloggingcmd'
+    environment: 'varnamelogging'
     strategy:
       runOnce:
         deploy:
