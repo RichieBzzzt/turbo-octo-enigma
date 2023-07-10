@@ -6,8 +6,16 @@ pool:
 variables:
   - name: toe
     value: "cephalopod"
+  - name: "version_major"
+    value: "0"
+  - name: "version_minor"
+    value: "0"
+  - name: "version_revision"
+    value: $[counter(variables['Version.Minor'], 0)]
+  - name: version_number
+    value: $(version_major).$(version_minor).$(version_revision)
 
-name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(version_number)
 
 stages:
 - stage: deploy
