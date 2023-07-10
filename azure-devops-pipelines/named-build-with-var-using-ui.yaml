@@ -5,11 +5,22 @@ pool:
 
 name: $(TeamProject)_$(ui.semver).$(Rev:r)
 
-steps:
-- task: PowerShell@2
-  displayName: 'Pre-defined build number.'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Host "This is the predefined variable for build number using 'name' property:"
-      Write-Host "$(Build.BuildNumber)"
+stages:
+- stage: deploy
+  jobs:
+  - deployment: UsingUI
+    displayName: Using UI
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'usingui'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Pre-defined build number.'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Write-Host "This is the predefined variable for build number using 'name' property:"
+                Write-Host "$(Build.BuildNumber)"
