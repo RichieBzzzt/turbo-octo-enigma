@@ -1,0 +1,49 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - name: toe
+    value: "cephalopod"
+  - name: "version_major"
+    value: "0"
+  - name: "version_minor"
+    value: "0"
+  - name: "version_revision"
+    value: $[counter(variables['Version.Minor'], 0)]
+ 
+
+name: $(TeamProject)_$(toe)_$(version_major).$(version_minor).$(version_revision)_$(Build.SourceBranchName)
+
+stages:
+- stage: build
+  jobs:
+  - job: Build
+    steps:
+    - task: PowerShell@2
+      displayName: 'Build Number Using Name Property'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "This is the variable for build number using 'name' property:"
+          Write-Host "$(Build.BuildNumber)"
+
+- stage: deploy
+  jobs:
+  - deployment: VarInName
+    displayName: Var In Name Expression
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'varinnameexpression'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Pre-defined build number'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Write-Host "This is the predefined variable for build number using 'name' property:"
+                Write-Host "$(Build.BuildNumber)"
