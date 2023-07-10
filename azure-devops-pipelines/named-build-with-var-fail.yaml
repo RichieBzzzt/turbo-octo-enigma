@@ -4,8 +4,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  name: bob
-  value: "toe"
+  - name: toe
+    value: "turbo_octo_enigma"
 
 name: $(TeamProject)_$(bob)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
