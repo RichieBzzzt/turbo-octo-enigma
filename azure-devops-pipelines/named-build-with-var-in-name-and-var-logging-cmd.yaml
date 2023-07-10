@@ -17,31 +17,45 @@ variables:
 
 name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
 
-steps:
-- task: PowerShell@2
-  displayName: 'Build Number Using Name Property'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Host "This is the variable for build number using 'name' property:"
-      Write-Host "$(Build.BuildNumber)"
-      Write-Host 'Note that Rev:r is not included...'
-      Write-Host 'To replicate Rev:r create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
+stages:
+- stage: build
+  jobs:
+  - job: Build
+    steps:
+    - task: PowerShell@2
+      displayName: 'Build Number Using Name Property'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "This is the variable for build number using 'name' property:"
+          Write-Host "$(Build.BuildNumber)"
+          Write-Host 'Note that Rev:r is not included...'
+          Write-Host 'To replicate Rev:r create a variable and use Azure DevOps Expression $[counter] in the azure devops yaml.'
+    - task: PowerShell@2
+      displayName: 'Logging Command'
+      inputs:
+        targetType: 'inline'
+        script: |
+            $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
+            Write-Host "##vso[build.updatebuildnumber]$BuildName"
 
-- task: PowerShell@2
-  displayName: 'Logging Command'
-  inputs:
-    targetType: 'inline'
-    script: |
-        $BuildName = $env:TOE +'_'+$env:VERSION_NUMBER +'_'+ $env:BUILD_SOURCEBRANCHNAME
-        Write-Host "##vso[build.updatebuildnumber]$BuildName"
-
-- task: PowerShell@2
-  displayName: 'Build Number Using Logging Command'
-  inputs:
-    targetType: 'inline'
-    script: |
-      Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
-      Write-Host "$(Build.BuildNumber)"
-      Write-Host "This overwrites what is set using 'name' property in the azure devops yaml."
+- stage: deploy
+  jobs:
+  - deployment: VarLoggingCmd
+    displayName: Var Logging Cmd
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'varloggingcmd'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: 'Build Number Using Logging Command'
+            inputs:
+              targetType: 'inline'
+              script: |
+                Write-Host "This is the variable for build number using vso[build.updatebuildnumber] logging command:"
+                Write-Host "$(Build.BuildNumber)"
+                Write-Host "This overwrites what is set using 'name' property in the azure devops yaml."
 

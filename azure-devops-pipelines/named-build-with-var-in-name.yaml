@@ -15,7 +15,7 @@ variables:
   - name: version_number
     value: $(version_major).$(version_minor).$(version_revision)
 
-name: $(TeamProject)_$(toe)_$(SourceBranchName)_$(version_major).$(version_minor).$(version_revision)
+name: $(TeamProject)_$(toe)_$(version_number)
 
 stages:
 - stage: deploy
